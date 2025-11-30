@@ -7,6 +7,6 @@ Ein Python-Tool zur automatischen Analyse von Bauzeichnungen und Mengenermittlun
 __version__ = "1.0.0"
 __author__ = "Bauzeichnung Team"
 
-from src.main import BauzeichnungAnalyzer, AnalysisResult
+from .main import BauzeichnungAnalyzer, AnalysisResult
 
 __all__ = ["BauzeichnungAnalyzer", "AnalysisResult"]

@@ -89,12 +89,16 @@ class QuantityCalculator:
     Attributes:
         default_wall_height: Standard-Wandhöhe in Metern
         default_slab_thickness: Standard-Deckendicke in Metern
+        default_beam_width: Standard-Unterzug-Breite in Metern
+        default_beam_height: Standard-Unterzug-Höhe in Metern
     """
     
     def __init__(
         self,
         default_wall_height: float = 2.75,
-        default_slab_thickness: float = 0.20
+        default_slab_thickness: float = 0.20,
+        default_beam_width: float = 0.30,
+        default_beam_height: float = 0.50
     ) -> None:
         """
         Initialisiert den QuantityCalculator.
@@ -102,9 +106,13 @@ class QuantityCalculator:
         Args:
             default_wall_height: Standard-Wandhöhe in Metern
             default_slab_thickness: Standard-Deckendicke in Metern
+            default_beam_width: Standard-Unterzug-Breite in Metern (Standard: 30cm)
+            default_beam_height: Standard-Unterzug-Höhe in Metern (Standard: 50cm)
         """
         self.default_wall_height = default_wall_height
         self.default_slab_thickness = default_slab_thickness
+        self.default_beam_width = default_beam_width
+        self.default_beam_height = default_beam_height
         logger.info(
             f"QuantityCalculator initialisiert "
             f"(Wandhöhe: {default_wall_height}m, Deckendicke: {default_slab_thickness}m)"
@@ -346,8 +354,8 @@ class QuantityCalculator:
         props = beam.properties
         
         length_m = dims.get("length_m", 1.0)
-        width_m = 0.30  # Standard: 30cm
-        height_m = 0.50  # Standard: 50cm
+        width_m = self.default_beam_width
+        height_m = self.default_beam_height
         
         # Querschnittsfläche
         cross_section_m2 = width_m * height_m

@@ -56,7 +56,7 @@ class StructuralDetector:
         Returns:
             Liste erkannter tragender Elemente als DetectedElement-Objekte
         """
-        from src.element_detector.detector import DetectedElement, BoundingBox
+        from .detector import DetectedElement, BoundingBox
         
         logger.info("Starte Erkennung tragender Elemente")
         
@@ -109,7 +109,7 @@ class StructuralDetector:
         Returns:
             Liste erkannter Stützen
         """
-        from src.element_detector.detector import DetectedElement, BoundingBox
+        from .detector import DetectedElement, BoundingBox
         
         columns = []
         height, width = binary.shape
@@ -166,7 +166,7 @@ class StructuralDetector:
         Returns:
             Liste erkannter Unterzüge
         """
-        from src.element_detector.detector import DetectedElement, BoundingBox
+        from .detector import DetectedElement, BoundingBox
         
         beams = []
         
@@ -211,7 +211,7 @@ class StructuralDetector:
         Returns:
             Liste erkannter Decken
         """
-        from src.element_detector.detector import DetectedElement, BoundingBox
+        from .detector import DetectedElement, BoundingBox
         
         slabs = []
         
@@ -315,11 +315,14 @@ class StructuralDetector:
         Returns:
             Liste von Tupeln (x, y, width, height)
         """
-        # Vereinfachte Implementierung
-        # In einer vollständigen Implementierung würde hier
-        # eine Mustererkennung für gestrichelte Linien stattfinden
+        # TODO: Implementiere Mustererkennung für gestrichelte Linien
+        # In einer vollständigen Implementierung würde hier:
+        # 1. Linien mit regelmäßigen Unterbrechungen erkannt werden
+        # 2. Das Strich-Lücken-Verhältnis analysiert werden
+        # 3. Unterzüge anhand typischer Muster identifiziert werden
+        logger.debug("Gestrichelte-Linien-Erkennung: Platzhalter-Implementierung")
         
-        return []  # Platzhalter
+        return []  # Platzhalter - keine gestrichelten Linien ohne vollständige Implementierung
     
     def _find_hatched_regions(
         self,
@@ -334,11 +337,14 @@ class StructuralDetector:
         Returns:
             Liste von Tupeln (x, y, width, height)
         """
-        # Vereinfachte Implementierung
-        # In einer vollständigen Implementierung würde hier
-        # eine Mustererkennung für Schraffuren stattfinden
+        # TODO: Implementiere Mustererkennung für Schraffuren
+        # In einer vollständigen Implementierung würde hier:
+        # 1. Parallele Linien in regelmäßigen Abständen erkannt werden
+        # 2. Verschiedene Schraffurwinkel (45°, 90°, etc.) analysiert werden
+        # 3. Schraffierte Flächen als Decken oder andere Elemente klassifiziert werden
+        logger.debug("Schraffur-Erkennung: Platzhalter-Implementierung")
         
-        return []  # Platzhalter
+        return []  # Platzhalter - keine Schraffuren ohne vollständige Implementierung
     
     def _parse_scale(self, scale: str) -> float:
         """

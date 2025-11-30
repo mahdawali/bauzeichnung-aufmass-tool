@@ -12,12 +12,12 @@ from typing import Any, Dict, List, Optional, Union
 
 from PIL import Image
 
-from src.pdf_parser.pdf_reader import PDFReader
-from src.image_processor.preprocessor import ImagePreprocessor
-from src.element_detector.detector import ElementDetector, DetectedElement
-from src.ocr.text_extractor import TextExtractor, DimensionInfo, TextRegion
-from src.quantity_calculator.calculator import QuantityCalculator, QuantityResult
-from src.export.exporter import Exporter
+from .pdf_parser.pdf_reader import PDFReader
+from .image_processor.preprocessor import ImagePreprocessor
+from .element_detector.detector import ElementDetector, DetectedElement
+from .ocr.text_extractor import TextExtractor, DimensionInfo, TextRegion
+from .quantity_calculator.calculator import QuantityCalculator, QuantityResult
+from .export.exporter import Exporter
 
 # Logging konfigurieren
 logging.basicConfig(

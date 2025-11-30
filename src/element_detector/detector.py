@@ -12,9 +12,9 @@ from typing import Any, Dict, List, Optional, Tuple
 import numpy as np
 from PIL import Image
 
-from src.element_detector.wall_detector import WallDetector
-from src.element_detector.opening_detector import OpeningDetector
-from src.element_detector.structural_detector import StructuralDetector
+from .wall_detector import WallDetector
+from .opening_detector import OpeningDetector
+from .structural_detector import StructuralDetector
 
 logger = logging.getLogger(__name__)
 

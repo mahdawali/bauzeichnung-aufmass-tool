@@ -107,7 +107,7 @@ class OpeningDetector:
         Returns:
             Liste erkannter Fenster
         """
-        from src.element_detector.detector import DetectedElement, BoundingBox
+        from .detector import DetectedElement, BoundingBox
         
         windows = []
         height, width = binary.shape
@@ -165,7 +165,7 @@ class OpeningDetector:
         Returns:
             Liste erkannter Türen
         """
-        from src.element_detector.detector import DetectedElement, BoundingBox
+        from .detector import DetectedElement, BoundingBox
         
         doors = []
         height, width = binary.shape
@@ -248,11 +248,14 @@ class OpeningDetector:
         Returns:
             Liste von Regionen (x, y, width, height)
         """
-        # Vereinfachte Implementierung
-        # In einer vollständigen Implementierung würde hier
-        # eine Mustererkennung für Viertelkreise stattfinden
+        # TODO: Implementiere Mustererkennung für Viertelkreise (Türschwung-Symbole)
+        # In einer vollständigen Implementierung würde hier:
+        # 1. Kreisförmige Konturen erkannt werden
+        # 2. Viertelkreise als Türschwung-Symbol identifiziert werden
+        # 3. Position und Größe der Türöffnung aus dem Symbol abgeleitet werden
+        logger.debug("Türschwung-Erkennung: Platzhalter-Implementierung")
         
-        return []  # Platzhalter
+        return []  # Platzhalter - keine Türschwünge ohne vollständige Implementierung
     
     def _flood_fill_region(
         self,

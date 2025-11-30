@@ -53,7 +53,7 @@ class WallDetector:
         Returns:
             Liste erkannter Wände als DetectedElement-Objekte
         """
-        from src.element_detector.detector import DetectedElement, BoundingBox
+        from .detector import DetectedElement, BoundingBox
         
         logger.info("Starte Wand-Erkennung")
         
