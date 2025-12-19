@@ -109,12 +109,20 @@ int OnInit()
    dailyStartBalance = AccountInfoDouble(ACCOUNT_BALANCE);
    accountStartBalance = AccountInfoDouble(ACCOUNT_BALANCE);
    
+   // Initialize lastBarTime to 0 to allow first bar to be processed
+   lastBarTime = 0;
+   
    Print("=== MT5 XAUUSD Scalper EA Initialized ===");
    Print("Symbol: ", _Symbol);
    Print("Timeframe: ", EnumToString(_Period));
    Print("Fast MA: ", FastMA_Period, " Medium MA: ", MediumMA_Period, " Slow MA: ", SlowMA_Period);
    Print("Lot Size: ", LotSize);
    Print("Stop Loss: ", StopLoss, " TP1: ", TP1_Points, " TP2: ", TP2_Points, " TP3: ", TP3_Points);
+   Print("Time Filter: ", UseTimeFilter ? "Enabled" : "Disabled", 
+         " Hours: ", StartHour, ":00 - ", EndHour, ":00");
+   Print("Max Spread: ", MaxSpread, " points");
+   Print("Safety: MinEquity=", MinEquity, " DailyLossLimit=", DailyLossLimit, 
+         " MaxDrawdown=", MaxDrawdownPercent, "%");
    
    return(INIT_SUCCEEDED);
 }
@@ -140,8 +148,11 @@ void OnTick()
 {
    // Check if new bar formed
    datetime currentBarTime = iTime(_Symbol, PERIOD_CURRENT, 0);
-   if(currentBarTime == lastBarTime)
+   if(lastBarTime != 0 && currentBarTime == lastBarTime)
       return;
+   
+   if(lastBarTime == 0)
+      Print("EA started, waiting for trading signals...");
    
    lastBarTime = currentBarTime;
    
@@ -155,15 +166,34 @@ void OnTick()
    
    // Safety checks
    if(!CheckSafetyConditions())
+   {
+      Print("Safety conditions not met");
       return;
+   }
    
    // Check trading time
    if(UseTimeFilter && !IsWithinTradingHours())
+   {
+      static datetime lastTimeWarning = 0;
+      if(TimeCurrent() - lastTimeWarning > 3600) // Print once per hour
+      {
+         Print("Outside trading hours");
+         lastTimeWarning = TimeCurrent();
+      }
       return;
+   }
    
    // Check spread
    if(!CheckSpread())
+   {
+      static datetime lastSpreadWarning = 0;
+      if(TimeCurrent() - lastSpreadWarning > 3600) // Print once per hour
+      {
+         Print("Spread too high");
+         lastSpreadWarning = TimeCurrent();
+      }
       return;
+   }
    
    // Update Moving Averages
    if(!UpdateIndicators())
@@ -238,7 +268,12 @@ bool CheckSafetyConditions()
    // Check minimum equity
    if(equity < MinEquity)
    {
-      Print("WARNING: Equity below minimum (", equity, " < ", MinEquity, ")");
+      static datetime lastEquityWarning = 0;
+      if(TimeCurrent() - lastEquityWarning > 3600)
+      {
+         Print("WARNING: Equity below minimum (", equity, " < ", MinEquity, ")");
+         lastEquityWarning = TimeCurrent();
+      }
       return false;
    }
    
@@ -246,24 +281,42 @@ bool CheckSafetyConditions()
    double dailyProfit = balance - dailyStartBalance;
    if(dailyProfit < -DailyLossLimit)
    {
-      Print("WARNING: Daily loss limit reached (", dailyProfit, " < ", -DailyLossLimit, ")");
+      static datetime lastDailyLossWarning = 0;
+      if(TimeCurrent() - lastDailyLossWarning > 3600)
+      {
+         Print("WARNING: Daily loss limit reached (", NormalizeDouble(dailyProfit, 2), 
+               " < ", -DailyLossLimit, ")");
+         lastDailyLossWarning = TimeCurrent();
+      }
       return false;
    }
    
    // Check maximum drawdown
-   double drawdown = (accountStartBalance - equity) / accountStartBalance * 100.0;
-   if(drawdown > MaxDrawdownPercent)
+   if(accountStartBalance > 0)
    {
-      Print("WARNING: Maximum drawdown exceeded (", drawdown, "% > ", MaxDrawdownPercent, "%)");
-      return false;
+      double drawdown = (accountStartBalance - equity) / accountStartBalance * 100.0;
+      if(drawdown > MaxDrawdownPercent)
+      {
+         static datetime lastDrawdownWarning = 0;
+         if(TimeCurrent() - lastDrawdownWarning > 3600)
+         {
+            Print("WARNING: Maximum drawdown exceeded (", NormalizeDouble(drawdown, 2), 
+                  "% > ", MaxDrawdownPercent, "%)");
+            lastDrawdownWarning = TimeCurrent();
+         }
+         return false;
+      }
    }
    
-   // Check free margin
-   double freeMargin = AccountInfoDouble(ACCOUNT_MARGIN_FREE);
-   if(freeMargin < 100)
+   // Check free margin (only if there are open positions)
+   if(PositionsTotal() > 0)
    {
-      Print("WARNING: Insufficient free margin (", freeMargin, ")");
-      return false;
+      double freeMargin = AccountInfoDouble(ACCOUNT_MARGIN_FREE);
+      if(freeMargin < 10) // Reduced from 100 for more flexibility
+      {
+         Print("WARNING: Insufficient free margin (", NormalizeDouble(freeMargin, 2), ")");
+         return false;
+      }
    }
    
    return true;
@@ -290,9 +343,18 @@ bool CheckSpread()
 {
    long spread = SymbolInfoInteger(_Symbol, SYMBOL_SPREAD);
    
+   // During backtesting, spread might be 0 or very low, so we allow it
+   if(spread == 0)
+      return true; // In backtesting mode, spread is often 0
+   
    if(spread > MaxSpread)
    {
-      Print("WARNING: Spread too high (", spread, " > ", MaxSpread, ")");
+      static datetime lastSpreadDetailWarning = 0;
+      if(TimeCurrent() - lastSpreadDetailWarning > 600) // Print every 10 minutes
+      {
+         Print("WARNING: Spread too high (", spread, " > ", MaxSpread, ")");
+         lastSpreadDetailWarning = TimeCurrent();
+      }
       return false;
    }
    
@@ -304,21 +366,24 @@ bool CheckSpread()
 //+------------------------------------------------------------------+
 bool UpdateIndicators()
 {
-   if(CopyBuffer(handleFastMA, 0, 0, 3, fastMA) < 3)
+   int copiedFast = CopyBuffer(handleFastMA, 0, 0, 3, fastMA);
+   if(copiedFast < 3)
    {
-      Print("ERROR: Failed to copy Fast MA buffer");
+      Print("ERROR: Failed to copy Fast MA buffer, copied: ", copiedFast, ", error: ", GetLastError());
       return false;
    }
    
-   if(CopyBuffer(handleMediumMA, 0, 0, 3, mediumMA) < 3)
+   int copiedMedium = CopyBuffer(handleMediumMA, 0, 0, 3, mediumMA);
+   if(copiedMedium < 3)
    {
-      Print("ERROR: Failed to copy Medium MA buffer");
+      Print("ERROR: Failed to copy Medium MA buffer, copied: ", copiedMedium, ", error: ", GetLastError());
       return false;
    }
    
-   if(CopyBuffer(handleSlowMA, 0, 0, 3, slowMA) < 3)
+   int copiedSlow = CopyBuffer(handleSlowMA, 0, 0, 3, slowMA);
+   if(copiedSlow < 3)
    {
-      Print("ERROR: Failed to copy Slow MA buffer");
+      Print("ERROR: Failed to copy Slow MA buffer, copied: ", copiedSlow, ", error: ", GetLastError());
       return false;
    }
    
@@ -332,25 +397,42 @@ int GetTradeSignal()
 {
    double price = SymbolInfoDouble(_Symbol, SYMBOL_BID);
    
+   // Debug: Print MA values periodically
+   static int debugCounter = 0;
+   if(debugCounter % 100 == 0)
+   {
+      Print("MA Values - Fast: ", NormalizeDouble(fastMA[0], 2), 
+            " Medium: ", NormalizeDouble(mediumMA[0], 2), 
+            " Slow: ", NormalizeDouble(slowMA[0], 2), 
+            " Price: ", NormalizeDouble(price, 2));
+   }
+   debugCounter++;
+   
    // BUY Signal: Fast MA crosses above Medium MA, and price is above Slow MA
    bool fastAboveMediumNow = fastMA[0] > mediumMA[0];
-   bool fastBelowMediumPrev = fastMA[1] < mediumMA[1];
+   bool fastBelowMediumPrev = fastMA[1] <= mediumMA[1]; // Changed to <= for more signals
    bool priceAboveSlow = price > slowMA[0];
    
    if(fastAboveMediumNow && fastBelowMediumPrev && priceAboveSlow)
    {
-      Print("BUY SIGNAL: Fast MA crossed above Medium MA, Price above Slow MA");
+      Print("=== BUY SIGNAL DETECTED ===");
+      Print("Fast MA crossed above Medium MA, Price above Slow MA");
+      Print("Fast[0]=", fastMA[0], " Medium[0]=", mediumMA[0], " Slow[0]=", slowMA[0]);
+      Print("Fast[1]=", fastMA[1], " Medium[1]=", mediumMA[1]);
       return 1; // Buy signal
    }
    
    // SELL Signal: Fast MA crosses below Medium MA, and price is below Slow MA
    bool fastBelowMediumNow = fastMA[0] < mediumMA[0];
-   bool fastAboveMediumPrev = fastMA[1] > mediumMA[1];
+   bool fastAboveMediumPrev = fastMA[1] >= mediumMA[1]; // Changed to >= for more signals
    bool priceBelowSlow = price < slowMA[0];
    
    if(fastBelowMediumNow && fastAboveMediumPrev && priceBelowSlow)
    {
-      Print("SELL SIGNAL: Fast MA crossed below Medium MA, Price below Slow MA");
+      Print("=== SELL SIGNAL DETECTED ===");
+      Print("Fast MA crossed below Medium MA, Price below Slow MA");
+      Print("Fast[0]=", fastMA[0], " Medium[0]=", mediumMA[0], " Slow[0]=", slowMA[0]);
+      Print("Fast[1]=", fastMA[1], " Medium[1]=", mediumMA[1]);
       return -1; // Sell signal
    }
    
