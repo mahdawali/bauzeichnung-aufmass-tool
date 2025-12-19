@@ -1,0 +1,463 @@
+================================================================================
+MT5 XAUUSD SCALPER - RECOMMENDED CONFIGURATION SETTINGS
+================================================================================
+
+This file contains pre-configured parameter sets for different risk profiles.
+Copy the desired configuration and use it in the Expert Advisor settings.
+
+================================================================================
+1. CONSERVATIVE SETTINGS (Low Risk - Recommended for Beginners)
+================================================================================
+
+Description: 
+- Smaller lot size
+- Wider stop loss for more breathing room
+- Tighter take profit targets
+- Strict safety controls
+- Suitable for accounts: $2,000+
+
+Moving Average Settings:
+-----------------------
+FastMA_Period = 12
+MediumMA_Period = 26
+SlowMA_Period = 50
+FastMA_Method = MODE_EMA
+MediumMA_Method = MODE_EMA
+SlowMA_Method = MODE_SMA
+MA_Price = PRICE_CLOSE
+
+Risk Management:
+-----------------------
+LotSize = 0.01
+StopLoss = 250
+TP1_Points = 120
+TP2_Points = 240
+TP3_Points = 400
+TP1_Percent = 50.0
+TP2_Percent = 30.0
+TP3_Percent = 20.0
+MaxSpread = 40
+MaxSlippage = 30
+BreakEvenPoints = 80
+
+Trailing Stop:
+-----------------------
+UseTrailingStop = true
+TrailingStart = 120
+TrailingStep = 40
+
+Trading Hours Filter:
+-----------------------
+UseTimeFilter = true
+StartHour = 8
+EndHour = 20
+
+Position Management:
+-----------------------
+MaxConcurrentTrades = 1
+MagicNumber = 123456
+
+Safety Features:
+-----------------------
+MinEquity = 100.0
+DailyLossLimit = 30.0
+MaxDrawdownPercent = 15.0
+
+Expected Performance:
+- Win Rate: 50-60%
+- Average Risk per Trade: 1.0-1.5%
+- Monthly Return Target: 3-8%
+- Maximum Drawdown: <15%
+
+================================================================================
+2. MODERATE SETTINGS (Medium Risk - For Experienced Traders)
+================================================================================
+
+Description:
+- Standard lot size
+- Balanced stop loss and take profit
+- Moderate safety controls
+- Suitable for accounts: $5,000+
+
+Moving Average Settings:
+-----------------------
+FastMA_Period = 10
+MediumMA_Period = 20
+SlowMA_Period = 50
+FastMA_Method = MODE_EMA
+MediumMA_Method = MODE_EMA
+SlowMA_Method = MODE_SMA
+MA_Price = PRICE_CLOSE
+
+Risk Management:
+-----------------------
+LotSize = 0.01
+StopLoss = 200
+TP1_Points = 150
+TP2_Points = 300
+TP3_Points = 500
+TP1_Percent = 50.0
+TP2_Percent = 30.0
+TP3_Percent = 20.0
+MaxSpread = 50
+MaxSlippage = 30
+BreakEvenPoints = 100
+
+Trailing Stop:
+-----------------------
+UseTrailingStop = true
+TrailingStart = 150
+TrailingStep = 50
+
+Trading Hours Filter:
+-----------------------
+UseTimeFilter = true
+StartHour = 8
+EndHour = 22
+
+Position Management:
+-----------------------
+MaxConcurrentTrades = 1
+MagicNumber = 123456
+
+Safety Features:
+-----------------------
+MinEquity = 100.0
+DailyLossLimit = 50.0
+MaxDrawdownPercent = 20.0
+
+Expected Performance:
+- Win Rate: 50-55%
+- Average Risk per Trade: 1.5-2.0%
+- Monthly Return Target: 5-12%
+- Maximum Drawdown: <20%
+
+================================================================================
+3. AGGRESSIVE SETTINGS (High Risk - For Professional Traders)
+================================================================================
+
+Description:
+- Larger lot size relative to account
+- Tighter stops with wider take profits
+- Relaxed safety controls
+- Suitable for accounts: $10,000+
+- WARNING: Higher risk of significant losses
+
+Moving Average Settings:
+-----------------------
+FastMA_Period = 8
+MediumMA_Period = 18
+SlowMA_Period = 45
+FastMA_Method = MODE_EMA
+MediumMA_Method = MODE_EMA
+SlowMA_Method = MODE_SMA
+MA_Price = PRICE_CLOSE
+
+Risk Management:
+-----------------------
+LotSize = 0.01
+StopLoss = 180
+TP1_Points = 180
+TP2_Points = 350
+TP3_Points = 600
+TP1_Percent = 50.0
+TP2_Percent = 30.0
+TP3_Percent = 20.0
+MaxSpread = 60
+MaxSlippage = 40
+BreakEvenPoints = 120
+
+Trailing Stop:
+-----------------------
+UseTrailingStop = true
+TrailingStart = 180
+TrailingStep = 60
+
+Trading Hours Filter:
+-----------------------
+UseTimeFilter = true
+StartHour = 7
+EndHour = 23
+
+Position Management:
+-----------------------
+MaxConcurrentTrades = 2
+MagicNumber = 123456
+
+Safety Features:
+-----------------------
+MinEquity = 100.0
+DailyLossLimit = 100.0
+MaxDrawdownPercent = 25.0
+
+Expected Performance:
+- Win Rate: 45-55%
+- Average Risk per Trade: 2.0-3.0%
+- Monthly Return Target: 10-20%
+- Maximum Drawdown: <25%
+
+WARNING: Aggressive settings can lead to significant losses. Only use if you:
+- Have substantial trading experience
+- Can afford to lose the entire account
+- Actively monitor positions daily
+- Understand advanced risk management
+
+================================================================================
+4. SCALPING OPTIMIZED (Very Active - Multiple Trades per Day)
+================================================================================
+
+Description:
+- Optimized for frequent trades
+- Quick entries and exits
+- Best during high volatility periods
+- Suitable for accounts: $3,000+
+
+Moving Average Settings:
+-----------------------
+FastMA_Period = 7
+MediumMA_Period = 15
+SlowMA_Period = 40
+FastMA_Method = MODE_EMA
+MediumMA_Method = MODE_EMA
+SlowMA_Method = MODE_SMA
+MA_Price = PRICE_CLOSE
+
+Risk Management:
+-----------------------
+LotSize = 0.01
+StopLoss = 150
+TP1_Points = 100
+TP2_Points = 200
+TP3_Points = 350
+TP1_Percent = 60.0
+TP2_Percent = 30.0
+TP3_Percent = 10.0
+MaxSpread = 45
+MaxSlippage = 25
+BreakEvenPoints = 60
+
+Trailing Stop:
+-----------------------
+UseTrailingStop = true
+TrailingStart = 100
+TrailingStep = 35
+
+Trading Hours Filter:
+-----------------------
+UseTimeFilter = true
+StartHour = 8
+EndHour = 22
+
+Position Management:
+-----------------------
+MaxConcurrentTrades = 1
+MagicNumber = 123456
+
+Safety Features:
+-----------------------
+MinEquity = 100.0
+DailyLossLimit = 40.0
+MaxDrawdownPercent = 18.0
+
+Expected Performance:
+- Win Rate: 55-65%
+- Number of Trades: High (5-15 per day)
+- Average Risk per Trade: 1.5%
+- Monthly Return Target: 8-15%
+- Maximum Drawdown: <18%
+
+Note: Requires low spread broker and good execution speed.
+
+================================================================================
+5. SWING TRADING (Longer Holds - Fewer Trades)
+================================================================================
+
+Description:
+- Holds positions longer
+- Wider stops and targets
+- Less active trading
+- Suitable for accounts: $2,000+
+
+Moving Average Settings:
+-----------------------
+FastMA_Period = 15
+MediumMA_Period = 30
+SlowMA_Period = 60
+FastMA_Method = MODE_EMA
+MediumMA_Method = MODE_SMA
+SlowMA_Method = MODE_SMA
+MA_Price = PRICE_CLOSE
+
+Risk Management:
+-----------------------
+LotSize = 0.01
+StopLoss = 300
+TP1_Points = 250
+TP2_Points = 500
+TP3_Points = 800
+TP1_Percent = 40.0
+TP2_Percent = 35.0
+TP3_Percent = 25.0
+MaxSpread = 55
+MaxSlippage = 35
+BreakEvenPoints = 150
+
+Trailing Stop:
+-----------------------
+UseTrailingStop = true
+TrailingStart = 250
+TrailingStep = 80
+
+Trading Hours Filter:
+-----------------------
+UseTimeFilter = false
+StartHour = 0
+EndHour = 23
+
+Position Management:
+-----------------------
+MaxConcurrentTrades = 1
+MagicNumber = 123456
+
+Safety Features:
+-----------------------
+MinEquity = 100.0
+DailyLossLimit = 60.0
+MaxDrawdownPercent = 20.0
+
+Expected Performance:
+- Win Rate: 45-55%
+- Number of Trades: Low (1-3 per day)
+- Average Risk per Trade: 2.0%
+- Monthly Return Target: 5-10%
+- Maximum Drawdown: <20%
+
+================================================================================
+BACKTESTING RECOMMENDATIONS
+================================================================================
+
+Minimum Testing Period:
+- Initial Validation: 3 months
+- Confidence Building: 6-12 months
+- Production Ready: 12-24 months
+
+Recommended Test Settings:
+- Symbol: XAUUSD
+- Timeframe: M5
+- Testing Mode: Every tick based on real ticks (most accurate)
+- Spread: Variable (if available) or Fixed at 30-40 points
+- Initial Deposit: Match your real account size
+- Commission: Check with your broker (typically $3-7 per lot round trip)
+
+Walk-Forward Analysis:
+- In-Sample Period: 6 months (for optimization)
+- Out-of-Sample Period: 2 months (for validation)
+- Forward Testing: 1 month before live deployment
+
+Key Metrics to Achieve (Minimum Targets):
+- Profit Factor: > 1.5
+- Win Rate: > 45%
+- Max Drawdown: < 25%
+- Recovery Factor: > 3.0
+- Number of Trades: > 100 (for statistical significance)
+
+================================================================================
+OPTIMIZATION GUIDELINES
+================================================================================
+
+Primary Parameters (Optimize First):
+1. FastMA_Period: Range 5-20, Step 1
+2. MediumMA_Period: Range 15-35, Step 2
+3. StopLoss: Range 150-300, Step 25
+4. TP1_Points: Range 100-250, Step 25
+
+Secondary Parameters (Optimize Second):
+1. SlowMA_Period: Range 40-80, Step 5
+2. TrailingStart: Range 100-250, Step 25
+3. TrailingStep: Range 30-80, Step 10
+
+Optimization Methods:
+- Use Genetic Algorithm for initial discovery
+- Use Complete Algorithm for final optimization
+- Always validate with Walk-Forward Analysis
+
+Warning Against Over-Optimization:
+- Don't optimize too many parameters simultaneously
+- Reserve 30-40% of data for out-of-sample testing
+- Look for stable parameter ranges, not single optimal values
+- Prefer robust parameter sets over curve-fitted results
+
+================================================================================
+BROKER REQUIREMENTS
+================================================================================
+
+Recommended Broker Characteristics:
+- Low spread on XAUUSD (average < 40 points)
+- Fast execution (< 100ms)
+- No EA restrictions
+- Minimum deposit: $500-1000
+- Leverage: 1:100 or higher
+- Regulation: Reputable regulatory body
+
+Broker Types:
+- ECN/STP brokers preferred (true market execution)
+- Avoid market makers with frequent requotes
+- Check broker's EA policy before trading
+
+================================================================================
+ACCOUNT SIZE RECOMMENDATIONS
+================================================================================
+
+Minimum Account Sizes by Risk Profile:
+- Conservative: $2,000
+- Moderate: $5,000
+- Aggressive: $10,000
+- Scalping Optimized: $3,000
+- Swing Trading: $2,000
+
+Lot Size Calculator:
+Account Balance × Risk% ÷ Stop Loss in USD = Lot Size
+
+Example:
+- Account: $5,000
+- Risk: 2%
+- Stop Loss: 200 points = $20 per 0.01 lot
+- Calculation: $5,000 × 0.02 ÷ $20 = 5 units of 0.01 lot = 0.05 lots
+
+================================================================================
+IMPORTANT REMINDERS
+================================================================================
+
+1. Always start with DEMO account
+2. Test for minimum 2-4 weeks on demo
+3. Begin live trading with minimum lot size
+4. Never risk more than 2% per trade
+5. Monitor the EA daily
+6. Keep a trading journal
+7. Adjust parameters based on market conditions
+8. Be aware of major news events
+9. Maintain sufficient margin at all times
+10. Use a VPS for 24/7 operation
+
+================================================================================
+FINAL NOTES
+================================================================================
+
+These settings are starting points based on general market behavior. 
+Always:
+- Backtest with YOUR broker's conditions
+- Optimize for YOUR trading goals and risk tolerance
+- Forward test before going live
+- Monitor and adjust as needed
+- Trade responsibly
+
+Market conditions change. What works today may not work tomorrow.
+Continuous monitoring and adjustment are essential for long-term success.
+
+DISCLAIMER: Past performance does not guarantee future results. Trading 
+involves risk. Only trade with capital you can afford to lose.
+
+================================================================================
+Version: 1.00
+Last Updated: 2024
+================================================================================
