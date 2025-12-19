@@ -503,7 +503,7 @@ void ManagePositions()
          else // SELL
          {
             newSL = NormalizeDouble(currentPrice + TrailingStep * point, digits);
-            if(newSL < sl || sl == 0)
+            if(sl == 0 || newSL < sl)
             {
                ModifyPosition(ticket, newSL, tp);
                Print("Trailing stop updated for position ", ticket, " New SL: ", newSL);

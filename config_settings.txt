@@ -422,7 +422,7 @@ Example:
 - Account: $5,000
 - Risk: 2%
 - Stop Loss: 200 points = $20 per 0.01 lot
-- Calculation: $5,000 × 0.02 ÷ $20 = 5 units of 0.01 lot = 0.05 lots
+- Calculation: $5,000 × 0.02 ÷ $20 = 5 × 0.01 lot = 0.05 lots
 
 ================================================================================
 IMPORTANT REMINDERS
@@ -459,5 +459,5 @@ involves risk. Only trade with capital you can afford to lose.
 
 ================================================================================
 Version: 1.00
-Last Updated: 2024
+Last Updated: December 2024
 ================================================================================

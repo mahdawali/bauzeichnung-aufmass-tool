@@ -483,5 +483,5 @@ This Expert Advisor is provided for educational and informational purposes. The 
 
 ---
 
-*Last Updated: 2024*
+*Last Updated: December 2024*
 *Version: 1.00*
